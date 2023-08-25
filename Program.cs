@@ -34,13 +34,15 @@ namespace MarkovImage
             string output = Console.ReadLine();
 
             Console.WriteLine("Enter the smallest number of starting points:");
-            if(!int.TryParse(Console.ReadLine(), out pointsMin))
+            string result = Console.ReadLine();
+            if(!int.TryParse(result, out pointsMin))
             {
                 System.Environment.Exit(13);
             }
             
             Console.WriteLine("Enter the largest number of starting points:");
-            if(!int.TryParse(Console.ReadLine(), out pointsMax))
+            result = Console.ReadLine();
+            if(!int.TryParse(result, out pointsMax))
             {
                 System.Environment.Exit(13);
             }
@@ -123,11 +125,11 @@ namespace MarkovImage
             }
 
             stopwatch.Restart();
-            int startPoints = random.Next(1, 25);
-            Console.WriteLine(startPoints);
+            int startPoints = random.Next(pointsMin, pointsMax+1);
+            Console.WriteLine("No start points: {0}", startPoints);
             RandomWalk(startPoints);
             stopwatch.Stop();
-            Console.WriteLine("Image generate in {0}", stopwatch.Elapsed);
+            Console.WriteLine("Image generated in {0}", stopwatch.Elapsed);
 
             // Copy the RGB values back to the bitmap
             Marshal.Copy(bytes, 0, data.Scan0, bytes.Length);
@@ -138,7 +140,7 @@ namespace MarkovImage
             bmp.UnlockBits(data);
 
             bmp.Dispose();
-            Console.WriteLine("Press any key to exit");
+            Console.WriteLine("Press any key to exit...");
             Console.ReadLine();
         }
 
@@ -164,10 +166,10 @@ namespace MarkovImage
                 var n = queue[index];
                 queue.RemoveAt(index);
 
-                if(n.Point.X < 0 || n.Point.Y < 0 || n.Point.X > width - 1 || n.Point.Y > height - 1)
+                if(visited[n.Point.X,n.Point.Y])
                     continue;
 
-                if(visited[n.Point.X,n.Point.Y])
+                if(n.Point.X < 0 || n.Point.Y < 0 || n.Point.X > width - 1 || n.Point.Y > height - 1)
                     continue;
 
                 visited[n.Point.X,n.Point.Y] = true;
