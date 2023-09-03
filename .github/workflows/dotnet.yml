@@ -25,13 +25,13 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet publish -c Release -r win-x64 --no-restore # Change release version for whichever os and arch you're targeting
+      run: dotnet publish -c Release -r win-x64
 
     - name: Install zip
       uses: montudor/action-zip@v1
 
     - name: Zip output
-      run: zip -qq -r artifact.zip bin/Release/net7.0/win-x64/native # Change path
+      run: zip -qq -r artifact.zip bin/Release/net7.0/win-x64/native
         
     - name: Create Release
       id: create_release
